@@ -32,9 +32,11 @@ export default class Tasks {
   @Get('/', { middleware: [authenticated], schema: getTaskQuerySchema })
   async getAll(req: Request, res: Response) {
     try {
-      let limit = 10
-      let offset = 0 + (parseInt(req.query.page as string) - 1) * limit
+      let limit
+      let offset
       if (req.query.page) {
+        limit = 10
+        offset = 0 + (parseInt(req.query.page as string) - 1) * limit
         delete req.query.page
       }
       const tasks = await TasksModel.findAndCountAll({
@@ -43,7 +45,7 @@ export default class Tasks {
           sequelize.literal(
             "CASE WHEN status = 'INPROGRESS' THEN 1 WHEN status = 'TODO' THEN 2 WHEN status = 'DONE' THEN 3 END"
           ),
-          ["updatedAt","DESC"]
+          ['updatedAt', 'DESC']
         ],
         offset,
         limit

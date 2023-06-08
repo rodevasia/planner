@@ -17,7 +17,7 @@ import BottomBar from '@renderer/components/ui/BottomBar'
 
 export default function Sprints() {
   const [sprints, { refetch }] = createResource<Sprint[]>(getSprints)
-  const [sprintTasks, setSprintTasks] = createStore<Issues[]>([])
+  const [sprintTasks, setSprintTasks] = createStore<{rows:Issues[]}>({rows:[]})
   const [show, setShow] = createSignal(false)
   const weekAfter = new Date()
   weekAfter.setDate(new Date().getDate() + 7)
@@ -41,7 +41,7 @@ export default function Sprints() {
   const handleShow = () => setShow(true)
 
   const fetchSprintTasks = async (sprint: string) => {
-    setSprintTasks([])
+    setSprintTasks({rows:[]})
     const result = await getTasks(project.id, sprint)
     setSprintTasks(result ?? [])
   }
@@ -87,7 +87,7 @@ export default function Sprints() {
                   <SprintTableItem
                     handlerKey={sprint.id}
                     sprint={sprint}
-                    tasks={sprintTasks}
+                    tasks={sprintTasks.rows}
                     onClick={() => fetchSprintTasks(sprint.id)}
                   />
                 )
