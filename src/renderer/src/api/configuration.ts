@@ -1,15 +1,16 @@
 import { route } from '@renderer/App';
 import { notify } from '@renderer/components/ui/notify'
 import { Axios, AxiosError } from 'axios';
+
+
 export const network = new Axios({
   baseURL: `http://localhost:6453/api`,
   withCredentials: true,
-  timeout:600000,
   headers: {
     'Content-Type': 'application/json'
   }
 })
-
+network.defaults.timeout=180000;
 network.interceptors.response.use(
   (response) => {
     if (response.status >= 400 && response.status <= 500) {

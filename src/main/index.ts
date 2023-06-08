@@ -1,17 +1,10 @@
+import './server'
 import { app, shell, BrowserWindow, dialog } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { existsSync, mkdirSync } from 'fs'
-
 let mainWindow: BrowserWindow
-process.env.DATABASE =
-  'postgresql://postgres:ytUTobmZzMnc7vVj@db.svqaxlmmnnxzxyxsnpaw.supabase.co:5432/postgres'
-process.env.VERIFICATION_SECRET = '12345'
-process.env.DOMAIN = 'http://localhost:6453/'
-process.env.EMAIL_PASSWORD = 'thflfirfzujgyogc'
-process.env.EMAIL_USERNAME = 'robertdevasia64@gmail.com'
-process.env.PORT = '6453'
 
 export const documentsPath = app.getPath('documents')
 
@@ -29,7 +22,6 @@ if (!gotTheLock) {
   app.quit()
   process.exit()
 } else {
-  console.log('accessing....')
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     try {
       // Someone tried to run a second instance, we should focus our window.
@@ -40,22 +32,22 @@ if (!gotTheLock) {
       // the commandLine is array of strings in which last element is deep link url
       // the url str ends with /
       const url = commandLine?.pop()!.slice(0, -1)
-      const param = url.split('planner://')[1]
-      const key = param.split('=')[0]
-      const value = param.split('=')[1]
-      handleDeeplinks(key, value)
+      if (url) {
+        const param = url?.split('planner://')[1]
+        const key = param?.split('=')[0]
+        const value = param?.split('=')[1]
+        handleDeeplinks(key, value)
+      }
     } catch (error) {
-      throw error
+      console.log(error)
+      process.exit()
     }
   })
 
+  createInvoicesFolder()
   // Create mainWindow, load the rest of the app, etc...
   app.whenReady().then(() => {
-    import('./server').then(async ({ runServer }) => {
-      await runServer()
-      createWindow()
-      createInvoicesFolder()
-    })
+    createWindow()
   })
 }
 
@@ -102,7 +94,7 @@ function createWindow(): void {
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    mainWindow.loadURL('http://localhost:6453/app')
   }
 }
 
