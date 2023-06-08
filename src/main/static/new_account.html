@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <meta name="author" content="Robert Devasia" />
+    <title>Create Account</title>
+    <link href="/static/css/bootstrap.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="vh-100 d-flex">
+      <div class="m-auto col-md-6 col-sm-6 col-lg-6 card">
+        <div class="card-header bg-primary">
+          <h3 class="text-center">Syplans</h3>
+        </div>
+        <div class="card-body">
+          <h4 class="text-center">Create Account</h4>
+          <div id="invalidCred" class="py-3 text-danger col-md-12 text-center col-md-12"></div>
+          <form class="needs-validation" novalidate onsubmit="onSubmit(event)">
+            <div class="row">
+              <div class="col-6 form-group">
+                <label for="name">Name:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  placeholder="Enter name"
+                />
+              </div>
+              <div class="col-6 form-group">
+                <label for="address">Address:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  placeholder="Enter address"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 form-group">
+                <label for="pincode">Pincode:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="text"
+                  class="form-control"
+                  id="pincode"
+                  placeholder="Enter pincode"
+                />
+              </div>
+              <div class="col-6 form-group">
+                <label for="country">Country:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="text"
+                  class="form-control"
+                  id="country"
+                  placeholder="Enter country"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 form-group">
+                <label for="city">City:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="text"
+                  class="form-control"
+                  id="city"
+                  placeholder="Enter city"
+                />
+              </div>
+              <div class="col-6 form-group">
+                <label for="phone">Phone:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  placeholder="Enter phone number"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 form-group">
+                <label for="email">Email:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter email"
+                />
+              </div>
+              <div class="col-6 form-group">
+                <label for="password">Password:</label>
+                <input
+                  onchange="onChange(this)"
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="Enter password"
+                />
+              </div>
+            </div>
+
+            <div
+              style="border: none; background-color: transparent"
+              class="card-footer text-center"
+            >
+              <button id="btn" type="submit" class="btn btn-outline-primary text-center">
+                Submit
+              </button>
+              <div id="loader" class="d-none spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </form>
+
+          <footer class="text-center">
+            <a href="/login" class="text-small">Login</a>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script>
+      let body = {}
+      function onChange(e) {
+        body[e.id] = e.value
+      }
+      async function onSubmit(e) {
+        e.preventDefault()
+        const form = e.currentTarget
+        if (form.checkValidity()) {
+          const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          })
+          const result = await response.json()
+          if (result.message === 'Verification Email Sent') {
+            const now = new Date()
+            now.setSeconds(now.getSeconds() + 10)
+            window.location.href = '/email-verification?expires=' + now.getTime()
+          }
+          form.classList.remove('was-validated')
+          form.reset()
+          document.getElementById('invalidCred').innerHTML = result.message
+          document.getElementById('invalidCred').classList.remove('d-none')
+          document.getElementById('loader').classList.add('d-none')
+          document.getElementById('btn').classList.remove('d-none')
+        } else {
+          return false
+        }
+      }
+    </script>
+  </body>
+</html>

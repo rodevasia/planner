@@ -1,0 +1,30 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": [
+    "autotable",
+    "datauristring",
+    "datepicker",
+    "docsploit",
+    "espress",
+    "espressive",
+    "halign",
+    "hstore",
+    "jspdf",
+    "melodev",
+    "pincode",
+    "qrcode",
+    "solidjs",
+    "supabase",
+    "Syplans",
+    "typecheck",
+    "valign"
+  ]
+}

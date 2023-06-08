@@ -1,0 +1,8 @@
+{
+  "name": "syplans",
+  "description": "Project management app",
+  "author": "Robert Devasia",
+  "framework": { "version": "1.1.0", "assets": ["/static","/uploads"] },
+  "module": { "root": "app" },
+  "environment": "development"
+}

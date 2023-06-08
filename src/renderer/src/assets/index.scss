@@ -1,0 +1,103 @@
+$primary: #30A3B2;
+$success: #4BEB9E;
+$body-bg: #4D4D4D;
+$secondary: #606060;
+$danger: #ff7b88;
+$dark: #323232;
+
+.card {
+  border-color: #656565 !important;
+  color: white;
+  background-color: $secondary !important;
+  border: 1px solid #656565 !important;
+  box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 20px !important;
+}
+
+.card-footer {
+  border: none !important;
+  background: transparent !important;
+}
+
+.accordion-button {
+  background-color: $dark !important;
+  box-shadow: none !important;
+  outline: none;
+  color: white !important;
+}
+.bg-transparent{
+  background-color:  transparent !important;
+  background:  transparent !important;
+}
+.form-control:disabled{
+  background-color: transparent !important;
+}
+button.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
+
+input.form-control,textarea.form-control {
+  border: none;
+  outline: none;
+  color-scheme: dark;
+  color: white !important;
+}
+
+.form-floating {
+  label {
+    color: #a1a1a1 !important;
+  }
+}
+
+* {
+  color: white;
+}
+
+
+@import 'bootstrap';
+
+.sy-modal .modal-content {
+  background-color: $secondary;
+  color: white;
+}
+
+.dropdown-menu-dark {
+  background: $secondary !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  border: 1px solid lighten($color: $secondary, $amount: 5) !important;
+  width: 100%;
+}
+
+.dropdown {
+  border-radius: .25rem !important;
+}
+::-webkit-calendar-picker-indicator {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-calendar3' viewBox='0 0 16 16'%3E%3Cpath d='M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z'/%3E%3Cpath d='M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'/%3E%3C/svg%3E");
+}
+.disabled >.page-link{
+  background-color: #4D4D4D !important;
+}
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.dropdown-toggle {
+  position: relative;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
