@@ -67,7 +67,6 @@ function TimeTracker(props: {
   }
   const handleStop = () => {
     clearInterval(intervalId() as number)
-    setElapsedTime((prev) => dayjs.duration(0))
     setStartTime(null)
     setIsRunning(false)
     if (props.onStop) {

@@ -19,7 +19,7 @@ import('./app/invoice/invoice.controller')
 
 const server = new Server('Syplans', {
   cors: {
-    origin: '*',
+    origin: ["http://localhost:5173"],
     credentials: true,
     methods: ['GET', 'PUT', 'POST', 'OPTIONS', 'DELETE']
   }
