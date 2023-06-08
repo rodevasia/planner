@@ -102,8 +102,8 @@ export default function ProjectLog(props: { projectId: string }) {
 }
 export const Log = (props: ProjectLogs['log'] & { project: string; user: string }) => {
   let pathname
-  if (props.item === 'sprint') pathname = `/project/${project.id}/sprint/`
-  if (props.item === 'issue') pathname = `/project/${project.id}/issues/${props.id}`
+  if (props.item === 'sprint') pathname = `/user/project/${project.id}/sprint/`
+  if (props.item === 'issue') pathname = `/user/project/${project.id}/issues/${props.id}`
   return (
     <div class="mb-0" style={{ color: '#C4C4C4' }}>
       {props.action === 'created' && props.item === 'sprint' && 'New sprint'}
