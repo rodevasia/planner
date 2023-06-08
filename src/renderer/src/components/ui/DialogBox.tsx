@@ -1,6 +1,5 @@
-import { createSignal, createContext, JSX, useContext } from 'solid-js'
+import { createSignal, JSX } from 'solid-js'
 import { Modal, Button } from 'solid-bootstrap'
-import { styled } from 'solid-styled-components'
 
 export interface DialogProps<DialogType = 'prompt' | 'alert'> {
   onHide?: () => void
@@ -29,10 +28,10 @@ const useDialogBox = () => {
 
   const hide = () => setVisible(false)
 
-  const Footer = ({ onSave, onCancel }) => (
+  const Footer = (props) => (
     <Modal.Footer>
-      <Button onClick={onSave}>{modalProps()?.promptButtonTitle ?? 'Save'}</Button>
-      <Button variant="outline-primary" onClick={onCancel}>
+      <Button onClick={props.onSave}>{modalProps()?.promptButtonTitle ?? 'Save'}</Button>
+      <Button variant="outline-primary" onClick={props.onCancel}>
         Cancel
       </Button>
     </Modal.Footer>
@@ -75,7 +74,7 @@ const useDialogBox = () => {
     )
   }
 
-  return { show, DialogBox,hide, ...(modalProps()?.isolatedFooter !== true ? { Footer } : null) }
+  return { show, DialogBox, hide, ...(modalProps()?.isolatedFooter !== true ? { Footer } : null) }
 }
 
 export default useDialogBox

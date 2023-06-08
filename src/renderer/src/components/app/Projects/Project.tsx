@@ -29,11 +29,11 @@ const Project: Component = () => {
   )
 }
 
-const ProjectView: Component<{ project: IProject }> = ({ project }) => {
-  const percentage = project.percentile
+const ProjectView: Component<{ project: IProject }> = (props) => {
+  const percentage = props.project.percentile
   const setPeriod = () => {
-    let _start: any = new Date(project.currentSprint.start)
-    let _end: any = new Date(project.currentSprint.end)
+    let _start: any = new Date(props.project.currentSprint.start)
+    let _end: any = new Date(props.project.currentSprint.end)
     _start = _start.toDateString().split(' ').slice(1, 3).reverse().join(' ')
     _end = _end.toDateString().split(' ').slice(1, 3).reverse().join(' ')
     return `${_start}\t/\t${_end}`
@@ -51,12 +51,12 @@ const ProjectView: Component<{ project: IProject }> = ({ project }) => {
         </div>
         <div class="mx-2">
           <div data-meta="project-name" class="row">
-            <p class="h3">{project.name}</p>
+            <p class="h3">{props.project.name}</p>
           </div>
-          {project.currentSprint && (
+          {props.project.currentSprint && (
             <div data-meta="sprint-details" class="my-2">
               <div class="row">
-                <p class="h6 col-6">{project.currentSprint.name}</p>
+                <p class="h6 col-6">{props.project.currentSprint.name}</p>
                 <p
                   class="col-6 text-right"
                   style={{ color: '#D1D1D1', 'font-size': '14px', 'text-align': 'right' }}
@@ -66,8 +66,8 @@ const ProjectView: Component<{ project: IProject }> = ({ project }) => {
               </div>
               <div>
                 <ul>
-                  {project.currentSprint.goals &&
-                    project.currentSprint.goals.map((t) => <li>{t}</li>)}
+                  {props.project.currentSprint.goals &&
+                    props.project.currentSprint.goals.map((t) => <li>{t}</li>)}
                 </ul>
               </div>
               <div>
@@ -77,38 +77,38 @@ const ProjectView: Component<{ project: IProject }> = ({ project }) => {
                     {
                       caption: 'Completed',
                       color: 'bg-success',
-                      value: project.count.completed / project.count.total
+                      value: props.project.count.completed / props.project.count.total
                     },
                     {
                       caption: 'In Progress',
                       color: 'bg-primary',
-                      value: project.count.inprogress / project.count.total
+                      value: props.project.count.inprogress / props.project.count.total
                     },
                     {
                       caption: 'Todo',
                       color: 'bg-dark',
-                      value: project.count.todo / project.count.total
+                      value: props.project.count.todo / props.project.count.total
                     }
                   ]}
                 />
               </div>
             </div>
           )}
-          {!project.currentSprint && (
+          {!props.project.currentSprint && (
             <div class="m-auto  text-center p-3">
               <i
                 style={{ 'font-size': 'xxx-large' }}
                 class="bi text-muted bi-exclamation-triangle-fill"
-              ></i>
+              />
               <p>No Active Sprint</p>
             </div>
           )}
         </div>
       </div>
       <div class="card col-md-6 mx-auto my-3 ">
-        <ProjectLog projectId={project.id} />
+        <ProjectLog projectId={props.project.id} />
       </div>
-      <BottomBar/>
+      <BottomBar />
     </div>
   )
 }

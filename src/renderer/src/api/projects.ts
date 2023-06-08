@@ -10,8 +10,8 @@ export async function getProject(id: string): Promise<IProject> {
   return data
 }
 export async function getProjectLogs(projectId) {
-  const { data } = await network.get('/logs', { params: { projectId: projectId } });
-  console.log(data);
-  
+  const { data } = await network.get('/logs', { params: { projectId: projectId } })
+  console.log(data)
+
   return data
 }

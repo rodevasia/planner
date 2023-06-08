@@ -1,8 +1,10 @@
+import { route } from '@renderer/App';
 import { notify } from '@renderer/components/ui/notify'
-import { Axios, AxiosError } from 'axios'
+import { Axios, AxiosError } from 'axios';
 export const network = new Axios({
   baseURL: `http://localhost:6453/api`,
   withCredentials: true,
+  timeout:600000,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -17,7 +19,9 @@ network.interceptors.response.use(
         !window.location.pathname.split('/').includes('auth')
       ) {
         notify.error('Session Expired!')
-        window.location.replace('/auth/login')
+        if(route!==undefined){
+          route()('/auth/login')
+        }
         return response
       }
       const data = JSON.parse(response.data)

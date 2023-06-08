@@ -5,7 +5,7 @@ import { ProjectLogs } from '@renderer/models/ProjectLogs'
 import { project } from '@renderer/store'
 import { A } from '@solidjs/router'
 import dayjs from 'dayjs'
-import { createResource } from 'solid-js'
+import { createResource, For } from 'solid-js'
 
 export default function ProjectLog(props: { projectId: string }) {
   const [logs] = createResource(props.projectId, getProjectLogs)
@@ -19,22 +19,24 @@ export default function ProjectLog(props: { projectId: string }) {
       )}
       {logs.state === 'ready' && (
         <ul class="overflow-y">
-          {logs().map((t) => {
-            return (
-              <li
-                class="my-5"
-                data-action={t.log.action}
-                style={{ 'border-bottom': 'solid #888888 1px' }}
-              >
-                <div class="d-flex">
-                  <Log {...t.log} project={t.projectId} user={t.user.name} />
-                  <p class="ms-auto" style={{ color: '#C4C4C4' }}>
-                    {dayjs(t.updatedAt).format('DD MMM YYYY')}
-                  </p>
-                </div>
-              </li>
-            )
-          })}
+          <For each={logs()}>
+            {(t) => {
+              return (
+                <li
+                  class="my-5"
+                  data-action={t.log.action}
+                  style={{ 'border-bottom': 'solid #888888 1px' }}
+                >
+                  <div class="d-flex">
+                    <Log {...t.log} project={t.projectId} user={t.user.name} />
+                    <p class="ms-auto" style={{ color: '#C4C4C4' }}>
+                      {dayjs(t.updatedAt).format('DD MMM YYYY')}
+                    </p>
+                  </div>
+                </li>
+              )
+            }}
+          </For>
           {logs().length === 0 && (
             <p class="text-center fs-5" style={{ color: 'rgb(209, 209, 209)' }}>
               No Logs

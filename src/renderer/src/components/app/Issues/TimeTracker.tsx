@@ -34,7 +34,7 @@ function TimeTracker(props: {
     return () => {
       clearInterval(intervalId() as number)
     }
-  }, [isRunning, startTime])
+  })
 
   const handleStart = () => {
     if (isRunning()) return
@@ -80,15 +80,15 @@ function TimeTracker(props: {
       {!isRunning() && elapsedTime().asMilliseconds() === 0 && (
         <Button onClick={handleStart}>Do this now</Button>
       )}
-      {isRunning() && <i class="bi bi-pause fw-bold fs-1 mx-3" onClick={handlePause}></i>}
+      {isRunning() && <i class="bi bi-pause fw-bold fs-1 mx-3" onClick={handlePause} />}
       {!isRunning() && elapsedTime().asMilliseconds() > 0 && (
-        <i class="bi bi-play fw-bold fs-1 mx-3" onClick={handleResume}></i>
+        <i class="bi bi-play fw-bold fs-1 mx-3" onClick={handleResume} />
       )}
       {!isRunning() && elapsedTime().asMilliseconds() > 0 && (
-        <i class="bi bi-stop fw-bold fs-1 mx-3" onClick={handleStop}></i>
+        <i class="bi bi-stop fw-bold fs-1 mx-3" onClick={handleStop} />
       )}
       {elapsedTime().asMilliseconds() > 0 && (
-        <i class="bi bi-arrow-clockwise fw-bold fs-3 mx-3" onClick={handleReset}></i>
+        <i class="bi bi-arrow-clockwise fw-bold fs-3 mx-3" onClick={handleReset} />
       )}
     </div>
   )

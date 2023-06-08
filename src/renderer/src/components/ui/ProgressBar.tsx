@@ -1,15 +1,9 @@
-export function ProgressBar({
-  progress,
-  captions = false
-}: {
-  progress: Progress[]
-  captions?: boolean
-}) {
+export function ProgressBar(props: { progress: Progress[]; captions?: boolean }) {
   return (
     <div class="col-md-12">
       {' '}
       <div class="progress">
-        {progress.map((item, index) => {
+        {props.progress.map((item, index) => {
           return (
             <div
               class={'progress-bar ' + item.color}
@@ -22,12 +16,12 @@ export function ProgressBar({
           )
         })}
       </div>
-      {captions && (
+      {props.captions && (
         <div class="row m-0 mt-2">
-          {progress.map((item, index) => {
+          {props.progress.map((item, index) => {
             return (
               <div class="col  row">
-                <div class={'label-box p-0 my-auto col-md-1 ' + item.color}></div>
+                <div class={'label-box p-0 my-auto col-md-1 ' + item.color} />
                 <small class="col px-1">{item.caption}</small>
               </div>
             )
@@ -48,7 +42,14 @@ export function ProgressBar({
 }
 
 interface Progress {
-  color: 'bg-primary' | 'bg-secondary' | 'bg-success' | 'bg-danger' | 'bg-warning'|"bg-dark"|"bg-light"
+  color:
+    | 'bg-primary'
+    | 'bg-secondary'
+    | 'bg-success'
+    | 'bg-danger'
+    | 'bg-warning'
+    | 'bg-dark'
+    | 'bg-light'
   caption: string
   value: number
 }

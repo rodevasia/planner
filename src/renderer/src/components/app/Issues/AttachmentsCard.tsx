@@ -15,7 +15,7 @@ export function AttachmentsCard(props: any) {
         }}
       >
         {!file() && (
-          <i style={{ 'font-size': '4.1rem' }} class="bi m-auto text-center bi-plus text-dark"></i>
+          <i style={{ 'font-size': '4.1rem' }} class="bi m-auto text-center bi-plus text-dark" />
         )}
         {file() && (
           <div class="d-flex col-12 m-auto h-100 justify-content-around flex-column align-items-center">
@@ -43,7 +43,7 @@ export function AttachmentsCard(props: any) {
             props.onChange(undefined)
           }}
           class="bi bi-trash m-auto text-center reset text-danger"
-        ></i>
+        />
       )}
       <style>
         {`

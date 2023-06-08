@@ -1,21 +1,13 @@
 import { Color } from './BottomBar'
 
-export default function ({
-  type,
-  onClick,
-  ...props
-}: {
-  type: ChipTypeProp
-  class?: string
-  onClick?: VoidFunction
-}) {
+export default function (props: { type: ChipTypeProp; class?: string; onClick?: VoidFunction }) {
   return (
     <ChipBuilder
-      onClick={onClick}
+      onClick={props.onClick}
       class={props.class}
-      text={type.text}
-      borderColor={type.borderColor}
-      backgroundColor={type.backgroundColor}
+      text={props.type.text}
+      borderColor={props.type.borderColor}
+      backgroundColor={props.type.backgroundColor}
     />
   )
 }

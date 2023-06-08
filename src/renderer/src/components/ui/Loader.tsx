@@ -1,12 +1,12 @@
 export default function Loader(props: any) {
-    return <>
+  return (
+    <>
       <div class="lds-ripple m-auto">
-        <div></div>
-        <div></div>
+        <div />
+        <div />
       </div>
       <style>
-        {
-          `
+        {`
                   .lds-ripple {
                         display: inline-block;
                         position: relative;
@@ -53,8 +53,8 @@ export default function Loader(props: any) {
                           opacity: 0;
                         }
                       }
-  `
-        }
+  `}
       </style>
     </>
-  }
+  )
+}

@@ -8,11 +8,10 @@ import {
   Button,
   Spinner
 } from 'solid-bootstrap'
-import { login, resetPassword } from '@renderer/api/auth'
-import { SubmitHandler, createForm, getError, getErrors, zodForm } from '@modular-forms/solid'
+import { resetPassword } from '@renderer/api/auth'
+import { SubmitHandler, createForm, zodForm } from '@modular-forms/solid'
 import { z } from 'zod'
 import { A, useLocation, useNavigate } from '@solidjs/router'
-import { setUser } from '@renderer/store'
 import { notify } from '../ui/notify'
 
 const Login: Component = () => {
@@ -33,7 +32,7 @@ const Login: Component = () => {
       }
     })
 
-  const [form, { Form, Field }] = createForm<{ confirmPassword: string; password: string }>({
+  const [, { Form, Field }] = createForm<{ confirmPassword: string; password: string }>({
     initialValues: {
       confirmPassword: '',
       password: ''

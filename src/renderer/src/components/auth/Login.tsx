@@ -57,13 +57,13 @@ const Login: Component = () => {
   const handleForgot = () => {
     dialog.show({
       type: 'prompt',
-      body({ setArgs }) {
+      body(props) {
         return (
           <>
             <FormControl
               placeholder="Enter Email Address"
-              onChange={(e) => setArgs(e.target.value)}
-              onblur={(e) => setArgs(e.target.value)}
+              onChange={(e) => props.setArgs(e.target.value)}
+              onblur={(e) => props.setArgs(e.target.value)}
             />
           </>
         )

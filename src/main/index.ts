@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, dialog, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, dialog } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -51,7 +51,11 @@ if (!gotTheLock) {
 
   // Create mainWindow, load the rest of the app, etc...
   app.whenReady().then(() => {
-    createWindow()
+    import('./server').then(async ({ runServer }) => {
+      await runServer()
+      createWindow()
+      createInvoicesFolder()
+    })
   })
 }
 
@@ -115,10 +119,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
-  createWindow()
-  createInvoicesFolder()
-  import('./server')
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

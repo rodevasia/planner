@@ -14,7 +14,7 @@ export async function forgot(body: any) {
   return data
 }
 
-export async function resetPassword(body:any){
-  const {data} = await network.post('/auth/reset-password',JSON.stringify(body));
-  return data;
+export async function resetPassword(body: any) {
+  const { data } = await network.post('/auth/reset-password', JSON.stringify(body))
+  return data
 }

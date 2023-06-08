@@ -67,7 +67,7 @@ const GenerateInvoice: Component = () => {
   const [input, setInputs] = createStore<GenerateInputs | object>()
   let trashCombine: InvoiceItems[] = []
   let combinedItems: InvoiceItems[] = []
-  let [invoiceItems, setInvoiceItems] = createStore<InvoiceItems[]>([])
+  const [invoiceItems, setInvoiceItems] = createStore<InvoiceItems[]>([])
   const _doneTasks = (page: number | undefined) => getTasksForGen(project.id, undefined, page)
   const [task] = createResource(page, _doneTasks)
   const modal = useDialogBox()
@@ -118,14 +118,14 @@ const GenerateInvoice: Component = () => {
 
   const checkDisableAvailability = (task: Issues) => {
     if (combine()) {
-      for (let item of invoiceItems) {
+      for (const item of invoiceItems) {
         if (item.tasks.includes(task.id)) return true
       }
     } else {
-      for (let item of combinedItems) {
+      for (const item of combinedItems) {
         if (item.tasks.includes(task.id)) return true
       }
-      for (let item of trashCombine) {
+      for (const item of trashCombine) {
         if (item.tasks.includes(task.id)) return true
       }
     }
@@ -248,7 +248,7 @@ const GenerateInvoice: Component = () => {
                         onClick={() => {
                           remove(adForm, 'additionalFields', { at: index() })
                         }}
-                      ></i>
+                      />
                     </Col>
                   )}
                   {index() === fieldArray.items.length - 1 && (
@@ -260,7 +260,7 @@ const GenerateInvoice: Component = () => {
                             value: { field: '', type: 'sub', value: '' }
                           })
                         }}
-                      ></i>
+                      />
                     </Col>
                   )}
                 </Row>
@@ -280,32 +280,34 @@ const GenerateInvoice: Component = () => {
             <Card style={{ 'min-height': '400px' }} class="overflow-hidden">
               {view() === 'form' && (
                 <Form onSubmit={handleSubmit}>
-                  {Object.keys(schema.shape).map((fieldName: any) => (
-                    <Field name={fieldName}>
-                      {(field, props) => (
-                        <FormGroup
-                          style={{
-                            display:
-                              fieldName !== 'projectId' && fieldName !== 'clientId'
-                                ? 'visible'
-                                : 'none'
-                          }}
-                          class="m-3"
-                        >
-                          <FormLabel>
-                            {fieldName[0].toUpperCase()}
-                            {fieldName.slice(1)}
-                          </FormLabel>
-                          <FormControl
-                            {...props}
-                            isInvalid={field.error.length > 0}
-                            value={field.value ?? ''}
-                          />
-                          {field.error && <small class="text-danger">{field.error}</small>}
-                        </FormGroup>
-                      )}
-                    </Field>
-                  ))}
+                  <For each={Object.keys(schema.shape)}>
+                    {(fieldName: any) => (
+                      <Field name={fieldName}>
+                        {(field, props) => (
+                          <FormGroup
+                            style={{
+                              display:
+                                fieldName !== 'projectId' && fieldName !== 'clientId'
+                                  ? 'visible'
+                                  : 'none'
+                            }}
+                            class="m-3"
+                          >
+                            <FormLabel>
+                              {fieldName[0].toUpperCase()}
+                              {fieldName.slice(1)}
+                            </FormLabel>
+                            <FormControl
+                              {...props}
+                              isInvalid={field.error.length > 0}
+                              value={field.value ?? ''}
+                            />
+                            {field.error && <small class="text-danger">{field.error}</small>}
+                          </FormGroup>
+                        )}
+                      </Field>
+                    )}
+                  </For>
                   <div class="float-end mx-3">
                     <Button type="reset" variant="outline-danger" class="me-3">
                       Reset
@@ -339,46 +341,50 @@ const GenerateInvoice: Component = () => {
                       }}
                       class="decoration-none text-white "
                     >
-                      {task()?.rows.map((t) => {
-                        const item = {
-                          duration: parseInt(t.duration),
-                          description: t.issue,
-                          tasks: [t.id],
-                          rate: getValue(form, 'rate') as string
-                        }
-                        return (
-                          <li class="my-2 py-2 border-bottom">
-                            <FormCheck
-                              id={t.id}
-                              disabled={checkDisableAvailability(t)}
-                              checked={handleChecked(t.issue)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  if (combine()) {
-                                    combinedItems.push(item)
-                                  } else {
-                                    setInvoiceItems((prev) => [...prev, item])
-                                  }
-                                } else {
-                                  if (combine()) {
-                                    combinedItems = combinedItems.filter(
-                                      (tr) => tr.description !== t.issue
-                                    )
-                                  } else {
-                                    const filtered = invoiceItems.filter(
-                                      (re) => re.description !== t.issue
-                                    )
-                                    setInvoiceItems((prev) => filtered)
-                                  }
-                                }
-                              }}
-                              label={`${t.issue} (${dayjs
-                                .duration(parseInt(t.duration))
-                                .format('HH : mm : ss')})`}
-                            />
-                          </li>
-                        )
-                      })}
+                      {
+                        <For each={task()?.rows}>
+                          {(t) => {
+                            const item = {
+                              duration: parseInt(t.duration),
+                              description: t.issue,
+                              tasks: [t.id],
+                              rate: getValue(form, 'rate') as string
+                            }
+                            return (
+                              <li class="my-2 py-2 border-bottom">
+                                <FormCheck
+                                  id={t.id}
+                                  disabled={checkDisableAvailability(t)}
+                                  checked={handleChecked(t.issue)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      if (combine()) {
+                                        combinedItems.push(item)
+                                      } else {
+                                        setInvoiceItems((prev) => [...prev, item])
+                                      }
+                                    } else {
+                                      if (combine()) {
+                                        combinedItems = combinedItems.filter(
+                                          (tr) => tr.description !== t.issue
+                                        )
+                                      } else {
+                                        const filtered = invoiceItems.filter(
+                                          (re) => re.description !== t.issue
+                                        )
+                                        setInvoiceItems((prev) => filtered)
+                                      }
+                                    }
+                                  }}
+                                  label={`${t.issue} (${dayjs
+                                    .duration(parseInt(t.duration))
+                                    .format('HH : mm : ss')})`}
+                                />
+                              </li>
+                            )
+                          }}
+                        </For>
+                      }
                     </ul>
                   )}
                   {task.state !== 'pending' && (
@@ -488,7 +494,7 @@ const GenerateInvoice: Component = () => {
           <Card class="col-2 m-auto text-center">
             <Card.Header>Generating Invoice</Card.Header>
             <Card.Body>
-              <Spinner animation="border" variant="primary"></Spinner>
+              <Spinner animation="border" variant="primary" />
             </Card.Body>
             <Card.Footer>
               <small style={{ 'font-size': 'x-small', color: '#cecece' }}>
@@ -533,7 +539,7 @@ const CombinedTasks: Component<{
   onChange: (combineMode: boolean) => void
   onCombined: (name: string) => false
   children: JSX.Element
-}> = ({ onCombined, children, onChange }) => {
+}> = (props) => {
   const [combined, setCombined] = createSignal(false)
   const dialog = useDialogBox()
   const handleCombined = () => {
@@ -566,9 +572,9 @@ const CombinedTasks: Component<{
       header: 'Combine Tasks',
       onPromptSave(hide, args) {
         if (args) {
-          const _fal = onCombined(args)
+          const _fal = props.onCombined(args)
           setCombined(_fal)
-          onChange(_fal)
+          props.onChange(_fal)
           hide()
         } else {
           hide()
@@ -585,20 +591,20 @@ const CombinedTasks: Component<{
           checked={combined()}
           onchange={(e) => {
             setCombined(e.target.checked)
-            onChange(e.target.checked)
+            props.onChange(e.target.checked)
           }}
           size={30}
           class="ms-auto my-auto"
         />
       </Card>
-      {children}
+      {props.children}
       {combined() && (
         <>
           <Card style={{ height: '50px' }} class=" px-3 my-2  flex-row">
             <Button
               onClick={() => {
                 setCombined(false)
-                onChange(false)
+                props.onChange(false)
               }}
               variant="outline-primary"
               style={{ 'border-radius': '99999px' }}

@@ -41,7 +41,7 @@ const TasksPage: Component = () => {
   )
 }
 
-const Issues: Component<{ tasks: IssuesInterface[]; page: number }> = ({ tasks, page }) => {
+const Issues: Component<{ tasks: IssuesInterface[]; page: number }> = (props) => {
   return (
     <div class=" col-md-11 m-auto">
       <BottomBar />
@@ -51,7 +51,7 @@ const Issues: Component<{ tasks: IssuesInterface[]; page: number }> = ({ tasks, 
           <div class="col-11">
             <input type="text" placeholder="Search Issue" class="form-control  my-2" />
           </div>
-          <div style={{ color: '#888888' }} class="bi bi-search col-1 my-auto"></div>
+          <div style={{ color: '#888888' }} class="bi bi-search col-1 my-auto" />
         </div>
         <A class="col-md-1 d-flex text-white" href={`/user/project/${project.id}/issues/create`}>
           <Button class="my-auto" variant="primary">
@@ -72,10 +72,10 @@ const Issues: Component<{ tasks: IssuesInterface[]; page: number }> = ({ tasks, 
             </tr>
           </thead>
           <tbody class="text-center">
-            {tasks.map((t, index) => {
+            {props.tasks.map((t, index) => {
               return (
                 <tr>
-                  <td>{(page - 1) * 10 + (index + 1)}</td>
+                  <td>{(props.page - 1) * 10 + (index + 1)}</td>
                   <td>{t.issue}</td>
                   <td>
                     {dayjs

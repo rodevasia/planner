@@ -33,7 +33,7 @@ export default function Invoices() {
   return (
     <>
       {invoices.loading && (
-        <div style={{height:'70vh',}} class="m-auto d-flex vw-100">
+        <div style={{ height: '70vh' }} class="m-auto d-flex vw-100">
           <Loader />
         </div>
       )}
@@ -45,9 +45,9 @@ export default function Invoices() {
               <div class="col-11">
                 <input type="text" placeholder="Search Invoice" class="form-control  my-2" />
               </div>
-              <div style={{ color: '#888888' }} class="bi bi-search col-1 my-auto"></div>
+              <div style={{ color: '#888888' }} class="bi bi-search col-1 my-auto" />
             </div>
-            <A class='col d-flex' href={`/user/project/${project.id}/invoices/generate`}>
+            <A class="col d-flex" href={`/user/project/${project.id}/invoices/generate`}>
               <Button class="my-auto text-white" variant="primary">
                 Generate
               </Button>
@@ -75,9 +75,9 @@ export default function Invoices() {
                       <td>{dayjs(t.createdAt).format('DD MMM YYYY')}</td>
                       <td class="d-flex justify-content-center overflow-visible">
                         <i
-                          onclick={() => downloadInvoice(t.name)}
+                          onClick={() => downloadInvoice(t.name)}
                           class="btn btn-opacity bi bi-download text-primary"
-                        ></i>
+                        />
                       </td>
                     </tr>
                   )
@@ -110,7 +110,7 @@ export default function Invoices() {
             }
         `}
           </style>
-          <BottomBar/>
+          <BottomBar />
         </div>
       )}
     </>

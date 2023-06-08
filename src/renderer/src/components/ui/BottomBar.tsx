@@ -56,7 +56,8 @@ function BottomDockItem(props: {
         inactiveClass={`${props.icon}`}
         activeClass={`${props.activeIcon} text-primary`}
         class="link"
-      ></A><br/>
+      />
+      <br />
       {props.label}
       <style>
         {`

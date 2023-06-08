@@ -1,4 +1,4 @@
-import { Component, createEffect, createResource, onMount } from 'solid-js'
+import { Component, createEffect, createResource, createSignal, onMount } from 'solid-js'
 import { Toaster } from 'solid-toast'
 import { useNavigate, useRoutes } from '@solidjs/router'
 import { routers } from './router'
@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import { setUser } from './store'
 import { produce } from 'solid-js/store'
 
+export const [route, setTo] = createSignal<any>()
 const authenticate = async () => {
   const res = await network.get('/', { baseURL: 'http://localhost:6453' })
   return res.data
@@ -16,10 +17,11 @@ const App: Component = () => {
   const [route] = createResource<{ path: string; user?: { name?: string; id?: string } }>(
     authenticate
   )
-  const navigate = useNavigate();
-  onMount(()=>{
-    window.electron.ipcRenderer.on('forgot-password',(event,arg)=>{
-      navigate(arg.path,{state:{token:arg.token}})
+  const navigate = useNavigate()
+  onMount(() => {
+    setTo(() => navigate)
+    window.electron.ipcRenderer.on('forgot-password', (event, arg) => {
+      navigate(arg.path, { state: { token: arg.token } })
     })
   })
   createEffect(() => {

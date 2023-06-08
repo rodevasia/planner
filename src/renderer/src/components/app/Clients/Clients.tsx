@@ -4,7 +4,6 @@ import Navigator from '@renderer/components/ui/Navigator'
 import { notify } from '@renderer/components/ui/notify'
 import { Button, Card, Col, FormControl, FormGroup, FormLabel, Row, Table } from 'solid-bootstrap'
 import { Component, createResource, createSignal } from 'solid-js'
-import { createStore } from 'solid-js/store'
 import { z } from 'zod'
 
 const Clients: Component = () => {
@@ -37,15 +36,15 @@ const Clients: Component = () => {
   })
   const handleSubmit = async (values) => {
     if (update()) {
-        values={...values,id:currentClient()}
-      await updateClient(values);
-      notify.info('Updated');
+      values = { ...values, id: currentClient() }
+      await updateClient(values)
+      notify.info('Updated')
       reset(form)
-      refetch();
-      setUpdate(false);
+      refetch()
+      setUpdate(false)
     } else {
-      await createClient(values);
-      notify.success('Created');
+      await createClient(values)
+      notify.success('Created')
       reset(form)
       refetch()
     }
@@ -83,9 +82,14 @@ const Clients: Component = () => {
                 )
               })}
               <Col class="d-flex mt-auto">
-                <Button  onClick={()=>{
+                <Button
+                  onClick={() => {
                     reset(form)
-                }} type="reset" variant="outline-danger" class="my-auto mx-2">
+                  }}
+                  type="reset"
+                  variant="outline-danger"
+                  class="my-auto mx-2"
+                >
                   Reset
                 </Button>
                 <Button type="submit" class="my-auto w-100">
@@ -118,20 +122,20 @@ const Clients: Component = () => {
                     <td>
                       <i
                         onClick={() => {
-                          setValues(form, t);
+                          setValues(form, t)
                           setCurrentClient(t.id)
                           setUpdate(true)
                         }}
                         class="bi bi-pencil mx-2 cursor-pointer text-primary"
-                      ></i>
+                      />
                       <i
                         onClick={async () => {
-                          await deleteClient(t.id);
-                          refetch();
+                          await deleteClient(t.id)
+                          refetch()
                           notify.info('Deleted')
                         }}
                         class="bi bi-trash text-danger cursor-pointer"
-                      ></i>
+                      />
                     </td>
                   </tr>
                 )

@@ -20,18 +20,18 @@ const Projects: Component = () => {
   )
 }
 
-const ProjectList: Component<{ projects: Contributor[] }> = ({ projects }) => {
+const ProjectList: Component<{ projects: Contributor[] }> = (props) => {
   return (
     <>
       <Row class="justify-content-center m-0">
-        {projects.map((project, index) => (
+        {props.projects.map((project, index) => (
           <Col as={Card} sm={3} class="m-3">
             <ProjectCard {...project} />
           </Col>
         ))}
         <Col as={Card} sm={3} class="m-3 text-center">
           <A href="/project/create">
-            <i class="bi bi-plus m-auto text-dark" style={{ 'font-size': '8.2rem' }}></i>
+            <i class="bi bi-plus m-auto text-dark" style={{ 'font-size': '8.2rem' }} />
           </A>
         </Col>
       </Row>

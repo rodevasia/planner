@@ -13,11 +13,11 @@ export const notify = {
       position: 'top-center'
     })
   },
-  info(message:string){
-    toast(message,{
-      icon:<i class='bi bi-info-circle text-primary'></i>,
-      className:"bg-secondary",
-      position:'top-center'
+  info(message: string) {
+    toast(message, {
+      icon: <i class="bi bi-info-circle text-primary" />,
+      className: 'bg-secondary',
+      position: 'top-center'
     })
   }
 }

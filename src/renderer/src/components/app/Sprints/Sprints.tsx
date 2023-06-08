@@ -66,7 +66,7 @@ export default function Sprints() {
   }
   return (
     <div class="col-md-10 m-auto" style={{ height: '92vh' }}>
-      <BottomBar/>
+      <BottomBar />
       <div class="row py-3 col-md-12 m-auto border-bottom border-dark">
         <p class="display-6 text-white col-md-11 p-0 m-0">Sprints</p>
         <button onClick={handleShow} class="btn btn-primary text-white col-md-1 p-0">
@@ -99,7 +99,7 @@ export default function Sprints() {
               <i
                 style={{ 'font-size': 'xxx-large' }}
                 class="bi text-muted bi-exclamation-triangle-fill"
-              ></i>
+              />
               <p class="text-white">No Sprint</p>
             </div>
           )}
@@ -165,7 +165,7 @@ export default function Sprints() {
                   <BSForm.Label>
                     Goals&nbsp;
                     <OverlayTrigger overlay={<Tooltip>Separate goals by comma(,)</Tooltip>}>
-                      <i class="bi bi-info-circle small cursor-pointer"></i>
+                      <i class="bi bi-info-circle small cursor-pointer" />
                     </OverlayTrigger>
                   </BSForm.Label>
                   <BSForm.Control value={field.value} {...props} />

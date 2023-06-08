@@ -19,7 +19,7 @@ export default function AttachmentsView(props: any) {
       <a
         download
         link={false}
-        target='_blank'
+        target="_blank"
         href={'http://localhost:6453/' + props.src}
         class="position-absolute btn btn-opacity bi bi-download text-primary"
       />

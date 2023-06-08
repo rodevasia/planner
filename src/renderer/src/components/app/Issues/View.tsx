@@ -122,7 +122,7 @@ const ViewIssue: Component = () => {
               })
             }
             class="ms-auto my-auto bi bi-trash fs-4 trashIco"
-          ></span>
+          />
         </div>
         <div>
           <span class="display-6">{task()?.issue}</span>
