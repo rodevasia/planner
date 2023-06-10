@@ -13,13 +13,13 @@
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
+    "copy":"node copy.js",
     "watch": "npx nodemon --watch src/main --ext ts --exec npm run dev",
     "build": "npm run typecheck && electron-vite build && npm run copy",
-    "copy":"node -e \"const { execSync } = require('child_process'); const os = require('os'); const platform = os.platform(); const sourceFile = '.espressive'; const destination = platform === 'win32' ? 'out\\\\main\\\\' : 'out/main/'; const command = platform === 'win32' ? `copy ${sourceFile} ${destination}` : `cp ${sourceFile} ${destination}`; execSync(command); console.log('File copied successfully.');\"",
     "postinstall": "electron-builder install-app-deps",
     "build:win": "npm run build && electron-builder --win --config",
-    "build:mac": "electron-vite build && electron-builder --mac --config",
-    "build:linux": "electron-vite build && electron-builder --linux --config"
+    "build:mac": "npm run build && electron-builder --mac --config",
+    "build:linux": "npm run build && electron-builder --linux --config"
   },
   "dependencies": {
     "@docsploit/espress": "^1.1.0",
