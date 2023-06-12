@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Planner
+Version=0.0.1
+X-GNOME-FullName=Planner
+Comment=Manage your projects
+Encoding=UTF-8
+Type=Application
+Icon=planner
+Terminal=false
+Path=planner
+Exec=planner %U
+TryExec=planner
+StartupNotify=false
+Categories=Utilities
+MimeType=application/planner;x-scheme-handler/planner;

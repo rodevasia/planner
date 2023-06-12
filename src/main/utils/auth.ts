@@ -26,7 +26,7 @@ passport.use(
           return done(null, false, { message: 'Incorrect email or password.' })
         }
 
-        return done(null, user)
+        return done(null, {id:user.id,name:user.name,verified:user.verified,email:user.email,})
       } catch (error) {
         console.log(error)
 

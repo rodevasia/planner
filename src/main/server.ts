@@ -10,6 +10,7 @@ import { dialog } from 'electron'
 import { writeFileSync } from 'fs'
 import path from 'path'
 import('./app/auth/auth.controller')
+import('./app/user/user.controller') 
 import('./app/clients/clients.controller')
 import('./app/projects/projects.controller')
 import('./app/sprints/sprints.controller')

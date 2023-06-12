@@ -30,7 +30,7 @@ const ProjectList: Component<{ projects: Contributor[] }> = (props) => {
           </Col>
         ))}
         <Col as={Card} sm={3} class="m-3 text-center">
-          <A href="/project/create">
+          <A href="/user/projects/new">
             <i class="bi bi-plus m-auto text-dark" style={{ 'font-size': '8.2rem' }} />
           </A>
         </Col>

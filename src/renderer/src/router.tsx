@@ -7,6 +7,7 @@ const User = lazy(() => import('./components/app/User'))
 const Register = lazy(() => import('./components/auth/Register'))
 const Clients = lazy(() => import('./components/app/Clients/Clients'))
 const Project = lazy(() => import('./components/app/Projects/Project'))
+const CreateProject =lazy(()=>import('./components/app/Projects/Create'))
 const Sprints = lazy(() => import('./components/app/Sprints/Sprints'))
 const Issues = lazy(() => import('./components/app/Issues/Issues'))
 const CreateIssues = lazy(() => import('./components/app/Issues/Create'))
@@ -28,6 +29,7 @@ export const routers: RouteDefinition[] = [
     component: User,
     children: [
       { path: 'projects', component: Projects },
+      { path: 'projects/new', component: CreateProject },
       {
         path: 'project/:id?',
         children: [

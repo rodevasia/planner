@@ -2,15 +2,22 @@ import { DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model 
 import Users, { UserModel } from '../user/user.model'
 import Projects, { ProjectsModel } from './projects.model'
 import { sequelize } from '../../utils/database'
-
+import { v4 } from 'uuid'
 interface Contributors
   extends Model<InferAttributes<Contributors>, InferCreationAttributes<Contributors>> {
+  id?: string
   projectId: ForeignKey<ProjectsModel['id']>
   userId: ForeignKey<UserModel['id']>
   role: 'OWNER' | 'MEMBER'
 }
 
 const Contributors = sequelize.define<Contributors>('contributors', {
+  id: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    allowNull: false,
+    defaultValue: () => v4()
+  },
   projectId: {
     type: DataTypes.UUID,
     references: {

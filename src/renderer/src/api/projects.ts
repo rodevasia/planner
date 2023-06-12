@@ -15,3 +15,8 @@ export async function getProjectLogs(projectId) {
 
   return data
 }
+
+export async function createProject(body:any) {
+  const {data} = await network.post('/projects',JSON.stringify(body));
+  return data;
+}

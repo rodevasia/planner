@@ -29,8 +29,12 @@ dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
   target:
-    - AppImage
+    - deb
+    - rpm
   maintainer: electronjs.org
+  mimeTypes: [x-scheme-handler/syplans] # Define MimeType
+  desktop:                            # Define desktop elem
+    exec: syplans %u
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}

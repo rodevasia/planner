@@ -2,7 +2,7 @@ import { Dropdown } from 'solid-bootstrap'
 import { createStore } from 'solid-js/store'
 
 function SelectBox(props: any) {
-  const [selected, setSelected] = createStore<any>(props)
+  const [selected, setSelected] = createStore<any>(props.selected)
 
   return (
     <>

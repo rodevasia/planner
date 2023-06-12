@@ -1,10 +1,24 @@
-import './server'
+
 import { app, shell, BrowserWindow, dialog } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { existsSync, mkdirSync } from 'fs'
 let mainWindow: BrowserWindow
+
+process.env.DATABASE =
+  'postgresql://postgres:ytUTobmZzMnc7vVj@db.svqaxlmmnnxzxyxsnpaw.supabase.co:5432/postgres'
+process.env.VERIFICATION_SECRET = 'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
+process.env.DOMAIN = 'http://localhost:6453/'
+process.env.EMAIL_PASSWORD = 'thflfirfzujgyogc'
+process.env.EMAIL_USERNAME = 'robertdevasia64@gmail.com'
+process.env.PORT = '6453'
+const acutalcw = process.cwd;
+process.cwd = () => (is.dev ? acutalcw() : __dirname)
+
+
+import('./server')
+
 
 export const documentsPath = app.getPath('documents')
 
@@ -132,6 +146,7 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and require them here.
 
 app.on('open-url', (event, url) => {
+  process.env.VERIFICATION_SECRET = 'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
   const param = url.split('planner://')[1]
   const key = param.split('=')[0]
   const value = param.split('=')[1]
