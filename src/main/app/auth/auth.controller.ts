@@ -47,7 +47,6 @@ export default class Auth {
             return next(err)
           }
           let user = req.user as UserModel
-          user = user.toJSON()
           return sendSuccessResponse('success', { name: user.name, id: user.id }, res)
         })
       })(req, res, next)
