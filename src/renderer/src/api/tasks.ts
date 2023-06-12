@@ -9,7 +9,13 @@ export async function getTasks(
   const { data } = await network.get('/tasks', { params: { projectId, sprintId, page } })
   return data
 }
-
+export async function searchTasks(
+  project: string,
+  key: string
+): Promise<{ rows: Issues[]; count: number }> {
+  const { data } = await network.get('/tasks/search', { params: { project, key } })
+  return data
+}
 export async function getTasksForGen(
   projectId: string,
   sprintId?: string,

@@ -11,7 +11,7 @@ export default function (props: { username: string }) {
   return (
     <Navbar class="max-vw-100" sticky="top" variant="dark" bg="primary" expand="md">
       <Container class="col-md-11 mx-0" fluid>
-        <Navbar.Brand href="/">Planner</Navbar.Brand>
+        <Navbar.Brand class='cursor-pointer' onClick={()=>navigator('/user/projects')} >Planner</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
           <Nav class="me-auto" />

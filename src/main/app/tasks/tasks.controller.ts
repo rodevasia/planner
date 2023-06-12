@@ -16,6 +16,7 @@ import Projects from '../projects/projects.model'
 import ProjectLogs from '../project_logs/project_logs.model'
 import { multerMultiFieldHandler } from '../../utils/uploader'
 import { sequelize } from '../../utils/database'
+import { Op } from 'sequelize'
 // import { upload } from "../../utils/uploader";
 
 /**
@@ -53,6 +54,30 @@ export default class Tasks {
       return sendSuccessResponse('success', tasks, res)
     } catch (error) {
       console.debug(error)
+      return sendErrorResponse(500, 'Internal Server Error', res)
+    }
+  }
+
+  @Get('/search', { middleware: [authenticated] })
+  async searchIssues(req: Request, res: Response) {
+    try {
+      const { project, key } = req.query
+      if (project) {
+        const list = await TasksModel.findAndCountAll({
+          where: {
+            projectId: project as string,
+            issue: {
+              [Op.iLike]: `%${key}%`
+            }
+          }
+        })
+        sendSuccessResponse('success', list, res)
+      } else {
+        return sendErrorResponse(400, 'Project is no set', res)
+      }
+    } catch (error) {
+      console.log(error)
+
       return sendErrorResponse(500, 'Internal Server Error', res)
     }
   }

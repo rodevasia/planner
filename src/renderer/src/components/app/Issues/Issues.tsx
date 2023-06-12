@@ -1,4 +1,4 @@
-import { getTasks } from '@renderer/api/tasks'
+import { getTasks, searchTasks } from '@renderer/api/tasks'
 import { Issues as IssuesInterface } from '@renderer/models/Tasks'
 import { project } from '@renderer/store'
 import { A } from '@solidjs/router'
@@ -15,7 +15,27 @@ dayjs.extend(duration)
 const TasksPage: Component = () => {
   const [page, setPage] = createSignal(1)
   const _getTasks = (page) => getTasks(project.id, undefined, page)
-  const [tasks] = createResource(page, _getTasks)
+  const [tasks, setTasks] = createResource(page, _getTasks)
+  const [text, setText] = createSignal('')
+  let timeoutId
+  const handleChange = (e) => {
+    setText(e.target.value)
+
+    clearTimeout(timeoutId)
+
+    timeoutId = setTimeout(async () => {
+      if (text().length > 3) {
+        const data = await searchTasks(project.id, text())
+        setTasks.mutate((prev) => data)
+      }
+      if (text().length === 0) {
+        setTasks.mutate(prev=>({rows:[],count:0}))
+        const data = await _getTasks(project.id)
+        setTasks.mutate((prev) => data)
+      }
+    }, 500)
+  }
+
   return (
     <>
       {tasks.loading && (
@@ -25,15 +45,17 @@ const TasksPage: Component = () => {
       )}
       {tasks.state === 'ready' && (
         <>
-          <Issues tasks={tasks().rows} page={page()} />
+          <Issues tasks={tasks().rows} page={page()} change={handleChange} />
           <div class="mb-5 mt-3 pb-5 d-flex">
-            <Paginator
-              activePage={page()}
-              totalPages={Math.ceil(tasks().count / 10)}
-              onPageChange={(page) => {
-                setPage(page)
-              }}
-            />
+            {text().length ===0 && (
+              <Paginator
+                activePage={page()}
+                totalPages={Math.ceil(tasks().count / 10)}
+                onPageChange={(page) => {
+                  setPage(page)
+                }}
+              />
+            )}
           </div>
         </>
       )}
@@ -41,7 +63,9 @@ const TasksPage: Component = () => {
   )
 }
 
-const Issues: Component<{ tasks: IssuesInterface[]; page: number }> = (props) => {
+const Issues: Component<{ tasks: IssuesInterface[]; page: number; change: (e: any) => void }> = (
+  props
+) => {
   return (
     <div class=" col-md-11 m-auto">
       <BottomBar />
@@ -49,7 +73,12 @@ const Issues: Component<{ tasks: IssuesInterface[]; page: number }> = (props) =>
         <p class="text-white display-6 col-md-6 py-md-0 my-md-0">Issues</p>
         <div class="col-md-4 d-flex search-input mx-md-4 py-0">
           <div class="col-11">
-            <input type="text" placeholder="Search Issue" class="form-control  my-2" />
+            <input
+              oninput={props.change}
+              type="text"
+              placeholder="Search Issue"
+              class="form-control  my-2"
+            />
           </div>
           <div style={{ color: '#888888' }} class="bi bi-search col-1 my-auto" />
         </div>
