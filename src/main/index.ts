@@ -1,5 +1,5 @@
 
-import { app, shell, BrowserWindow, dialog } from 'electron'
+import { app, shell, BrowserWindow, dialog, screen } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -80,9 +80,12 @@ function createInvoicesFolder() {
 
 function createWindow(): void {
   // Create the browser window.
+  const display = screen.getPrimaryDisplay()
+  const maxiSize = display.workAreaSize
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: maxiSize.width,
+    height: maxiSize.height,
+    resizable:false,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
