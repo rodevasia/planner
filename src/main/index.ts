@@ -46,8 +46,10 @@ if (!gotTheLock) {
       const lastArg = commandLine[commandLine.length - 1]
       if (lastArg.startsWith('planner://')) {
         if (lastArg) {
-          const param = lastArg?.split('planner://')[1]
-
+          let param = lastArg?.split('planner://')[1]
+          param = process.platform === 'win32' ? param.slice(0, param.length-1) : param
+          console.log(param);
+          
           const key = param?.split('=')[0]
           const value = param?.split('=')[1]
           handleDeeplinks(key, value)
