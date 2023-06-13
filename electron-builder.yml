@@ -30,7 +30,7 @@ dmg:
 linux:
   target:
     - deb
-    - rpm
+    # - rpm
   maintainer: electronjs.org
   mimeTypes: [x-scheme-handler/syplans] # Define MimeType
   desktop:                            # Define desktop elem

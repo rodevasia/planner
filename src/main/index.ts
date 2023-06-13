@@ -1,4 +1,3 @@
-
 import { app, shell, BrowserWindow, dialog, screen } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -8,17 +7,16 @@ let mainWindow: BrowserWindow
 
 process.env.DATABASE =
   'postgresql://postgres:ytUTobmZzMnc7vVj@db.svqaxlmmnnxzxyxsnpaw.supabase.co:5432/postgres'
-process.env.VERIFICATION_SECRET = 'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
+process.env.VERIFICATION_SECRET =
+  'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
 process.env.DOMAIN = 'http://localhost:6453/'
 process.env.EMAIL_PASSWORD = 'thflfirfzujgyogc'
 process.env.EMAIL_USERNAME = 'robertdevasia64@gmail.com'
 process.env.PORT = '6453'
-const acutalcw = process.cwd;
+const acutalcw = process.cwd
 process.cwd = () => (is.dev ? acutalcw() : __dirname)
 
-
 import('./server')
-
 
 export const documentsPath = app.getPath('documents')
 
@@ -45,12 +43,15 @@ if (!gotTheLock) {
       }
       // the commandLine is array of strings in which last element is deep link url
       // the url str ends with /
-      const url = commandLine?.pop()!.slice(0, -1)
-      if (url) {
-        const param = url?.split('planner://')[1]
-        const key = param?.split('=')[0]
-        const value = param?.split('=')[1]
-        handleDeeplinks(key, value)
+      const lastArg = commandLine[commandLine.length - 1]
+      if (lastArg.startsWith('planner://')) {
+        if (lastArg) {
+          const param = lastArg?.split('planner://')[1]
+
+          const key = param?.split('=')[0]
+          const value = param?.split('=')[1]
+          handleDeeplinks(key, value)
+        }
       }
     } catch (error) {
       console.log(error)
@@ -85,7 +86,7 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: maxiSize.width,
     height: maxiSize.height,
-    resizable:false,
+    resizable: false,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -149,7 +150,7 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and require them here.
 
 app.on('open-url', (event, url) => {
-  process.env.VERIFICATION_SECRET = 'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
+  event.preventDefault()
   const param = url.split('planner://')[1]
   const key = param.split('=')[0]
   const value = param.split('=')[1]
@@ -157,6 +158,9 @@ app.on('open-url', (event, url) => {
 })
 
 async function handleDeeplinks(key: string, value: string) {
+  process.env.VERIFICATION_SECRET =
+    'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
+
   if (key === 'verifyAccount') {
     const { verifyAccount } = await import('./app/auth/auth.deeplinks')
     const val = await verifyAccount(value)
