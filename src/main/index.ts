@@ -1,22 +1,52 @@
-import { app, shell, BrowserWindow, dialog, screen } from 'electron'
+import { app, shell, BrowserWindow, dialog, screen, ipcMain } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { existsSync, mkdirSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { getEnv, sendSuccessResponse, Server } from '@docsploit/espress'
+import { connect } from 'http2'
+import { connectDatabase, sequelize } from './utils/database'
 let mainWindow: BrowserWindow
 
-process.env.DATABASE =
-  'postgresql://postgres:ytUTobmZzMnc7vVj@db.svqaxlmmnnxzxyxsnpaw.supabase.co:5432/postgres'
+const existStorage = existsSync(path.join(app.getPath('userData'), 'storage.json'))
+if (existStorage) {
+  const store = JSON.parse(
+    readFileSync(path.join(app.getPath('userData'), 'storage.json')).toString()
+  )
+  process.env.EMAIL_PASSWORD = store.mailerPassword
+  process.env.EMAIL_USERNAME = store.email
+}
 process.env.VERIFICATION_SECRET =
   'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
 process.env.DOMAIN = 'http://localhost:6453/'
-process.env.EMAIL_PASSWORD = 'thflfirfzujgyogc'
-process.env.EMAIL_USERNAME = 'robertdevasia64@gmail.com'
+
 process.env.PORT = '6453'
 const acutalcw = process.cwd
 process.cwd = () => (is.dev ? acutalcw() : __dirname)
 
-import('./server')
+if (existStorage) {
+  connectDatabase().then((res) => {
+    if (res) {
+      import('./server')
+    } else {
+      dialog.showMessageBox({ message: 'Failed to connect to the database' })
+      app.exit(1)
+    }
+  })
+} else {
+  const server = new Server('Syplans', {
+    cors: {
+      origin: ['http://localhost:5173'],
+      credentials: true,
+      methods: ['GET']
+    }
+  })
+  server.app.get('/', (req, res) => {
+    return sendSuccessResponse('success', { path: '/auth/connection' }, res)
+  })
+
+  server.run({ port: getEnv('PORT') })
+}
 
 export const documentsPath = app.getPath('documents')
 
@@ -27,6 +57,33 @@ if (process.defaultApp) {
 } else {
   app.setAsDefaultProtocolClient('planner')
 }
+
+ipcMain.on('create-connection', async (event, arg) => {
+  writeFileSync(path.join(app.getPath('userData'), 'storage.json'), JSON.stringify(arg))
+  try {
+    const c = await connectDatabase(true)
+    if (c) {
+      if (sequelize) {
+        await import('./app/auth/auth.controller')
+        await import('./app/user/user.controller')
+        await import('./app/clients/clients.controller')
+        await import('./app/projects/projects.controller')
+        await import('./app/sprints/sprints.controller')
+        await import('./app/tasks/tasks.controller')
+        await import('./app/project_logs/project_logs.controller')
+        await import('./app/invoice/invoice.controller')
+        await sequelize?.sync({ alter: true });
+        app.relaunch()
+        app.exit(1)
+      }
+    } else {
+      dialog.showMessageBox({ message: 'Failed to connect to the database' })
+    }
+  } catch (error) {
+    console.log(error)
+    dialog.showMessageBox({ message: 'Failed to connect to the database' })
+  }
+})
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -47,9 +104,9 @@ if (!gotTheLock) {
       if (lastArg.startsWith('planner://')) {
         if (lastArg) {
           let param = lastArg?.split('planner://')[1]
-          param = process.platform === 'win32' ? param.slice(0, param.length-1) : param
-          console.log(param);
-          
+          param = process.platform === 'win32' ? param.slice(0, param.length - 1) : param
+          console.log(param)
+
           const key = param?.split('=')[0]
           const value = param?.split('=')[1]
           handleDeeplinks(key, value)
@@ -112,7 +169,11 @@ function createWindow(): void {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    if (existStorage) {
+      mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    } else {
+      mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/auth/connection')
+    }
   } else {
     mainWindow.loadURL('http://localhost:6453/app')
   }

@@ -18,3 +18,7 @@ export async function resetPassword(body: any) {
   const { data } = await network.post('/auth/reset-password', JSON.stringify(body))
   return data
 }
+
+export async function createConnection(body: any) {
+  window.electron.ipcRenderer.send('create-connection', body)
+}

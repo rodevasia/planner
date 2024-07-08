@@ -1,13 +1,14 @@
 import { RouteDefinition } from '@solidjs/router'
 import { lazy } from 'solid-js'
 
+const Connection = lazy(() => import('./components/auth/Connection'))
 const Login = lazy(() => import('./components/auth/Login'))
 const Projects = lazy(() => import('./components/app/Projects/Projects'))
 const User = lazy(() => import('./components/app/User'))
 const Register = lazy(() => import('./components/auth/Register'))
 const Clients = lazy(() => import('./components/app/Clients/Clients'))
 const Project = lazy(() => import('./components/app/Projects/Project'))
-const CreateProject =lazy(()=>import('./components/app/Projects/Create'))
+const CreateProject = lazy(() => import('./components/app/Projects/Create'))
 const Sprints = lazy(() => import('./components/app/Sprints/Sprints'))
 const Issues = lazy(() => import('./components/app/Issues/Issues'))
 const CreateIssues = lazy(() => import('./components/app/Issues/Create'))
@@ -19,6 +20,7 @@ export const routers: RouteDefinition[] = [
   {
     path: '/auth',
     children: [
+      { path: '/connection', component: Connection },
       { path: '/login', component: Login },
       { path: 'register', component: Register },
       { path: 'reset', component: ResetPassword }

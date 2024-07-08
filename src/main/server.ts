@@ -3,14 +3,16 @@ import sessionStore from 'connect-session-sequelize'
 import session from 'express-session'
 import passport from 'passport'
 import { connectDatabase, sequelize } from './utils/database'
-import { authenticated } from './utils/auth'
+import { app as eapp } from 'electron'
 import { downloadFromBucket } from './utils/uploader'
 import { UserModel } from './app/user/user.model'
 import { dialog } from 'electron'
-import { writeFileSync } from 'fs'
+import { existsSync, writeFileSync } from 'fs'
 import path from 'path'
+
+import { authenticated } from './utils/auth'
 import('./app/auth/auth.controller')
-import('./app/user/user.controller') 
+import('./app/user/user.controller')
 import('./app/clients/clients.controller')
 import('./app/projects/projects.controller')
 import('./app/sprints/sprints.controller')
@@ -20,7 +22,7 @@ import('./app/invoice/invoice.controller')
 
 const server = new Server('Syplans', {
   cors: {
-    origin: ["http://localhost:5173"],
+    origin: ['http://localhost:5173'],
     credentials: true,
     methods: ['GET', 'PUT', 'POST', 'OPTIONS', 'DELETE']
   }
@@ -29,20 +31,31 @@ const server = new Server('Syplans', {
 const { app } = server
 const SequelizeStore: any = sessionStore(session.Store)
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'secret',
-    resave: false,
-    saveUninitialized: false,
-    store: new SequelizeStore({ db: sequelize }),
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 24 hour
-      httpOnly: false,
-      secure: false,
-      sameSite: 'lax'
-    }
-  })
-)
+if (sequelize) {
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || 'secret',
+      resave: false,
+      saveUninitialized: false,
+      store: new SequelizeStore({ db: sequelize }),
+      cookie: {
+        maxAge: 24 * 60 * 60 * 1000, // 24 hour
+        httpOnly: false,
+        secure: false,
+        sameSite: 'lax'
+      }
+    })
+  )
+  if (!existsSync(path.join(eapp.getPath('userData'), '_Session.completed'))) {
+    sequelize.sync({ alter: true }).then(() => {
+      writeFileSync(
+        path.join(eapp.getPath('userData'), '_Session.completed'),
+        Math.random().toString()
+      )
+    })
+  }
+}
+
 app.use(passport.initialize())
 app.use(passport.session())
 //register controllers here eg: server.register(ExampleController)
@@ -54,10 +67,10 @@ app.use(passport.session())
 // server.register(Tasks)
 // server.register(Project_logs)
 // server.register(Invoice)
-app.use('/assets',server.express.static(path.join(__dirname, '..', 'renderer','assets')))
+app.use('/assets', server.express.static(path.join(__dirname, '..', 'renderer', 'assets')))
 app.get('/app', async (req, res) => {
-  try {  
-    return res.sendFile(path.join(__dirname, '..', 'renderer','index.html'))
+  try {
+    return res.sendFile(path.join(__dirname, '..', 'renderer', 'index.html'))
   } catch (error) {
     console.log(error)
     return sendErrorResponse(500, 'Internal Server Error', res)
@@ -121,5 +134,5 @@ app.get('/invoices/:id', [authenticated], async (req, res) => {
   }
 })
 // add code here
-connectDatabase()
+
 server.run({ port: getEnv('PORT'), apiDocs: false })

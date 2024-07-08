@@ -1,23 +1,47 @@
-import { getEnv } from '@docsploit/espress'
+import { app } from 'electron'
+import { existsSync, readFileSync } from 'fs'
+
+import path from 'path'
 import { Sequelize } from 'sequelize'
 
-export const sequelize = new Sequelize(getEnv('DATABASE'), {
-  logging: false,
-  dialectOptions: {
-    // ssl: true
-    connectTimeout: 7500000
+function initializeC(){
+  if(existsSync(path.join(app.getPath('userData'), 'storage.json'))){
+    const store = JSON.parse(readFileSync(path.join(app.getPath('userData'), 'storage.json')).toString())
+    const url = `postgresql://${store.username}:${store.password}@${store.host}:5432/${store.db}`
+    return new Sequelize(url, {
+      logging: false,
+      dialectOptions: {
+        // ssl: true
+        connectTimeout: 7500000
+      }
+    })
   }
-})
 
-export async function connectDatabase() {
+  }
+    
+
+export let sequelize = initializeC()
+
+export async function connectDatabase(newWrite=false) {
   try {
-    console.log('Connecting database...')
+    if(sequelize){
+      console.log('Connecting database...')
 
     await sequelize.authenticate()
-    // await sequelize.sync({ alter: true });
-    console.log('Database Connected')
+    console.log('Database Connected');
+    return true
+    }else{
+      if(newWrite){
+        sequelize = initializeC()
+        await sequelize?.authenticate()
+        console.log('Database Connected');
+        return true
+      }
+      return false;
+    }
   } catch (error) {
     console.log('Database Connection Failed')
-    throw error
+    console.log(error);
+    return false;
   }
 }
