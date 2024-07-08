@@ -4,7 +4,6 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { getEnv, sendSuccessResponse, Server } from '@docsploit/espress'
-import { connect } from 'http2'
 import { connectDatabase, sequelize } from './utils/database'
 let mainWindow: BrowserWindow
 

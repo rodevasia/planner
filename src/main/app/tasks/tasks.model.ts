@@ -28,7 +28,7 @@ export interface TaskModel
   projectId: string
 }
 
-const Tasks = sequelize.define<TaskModel>('task', {
+const Tasks = sequelize!.define<TaskModel>('task', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,

@@ -20,7 +20,7 @@ interface InvoiceModel
   clientId: ForeignKey<string>
   projectId: ForeignKey<string>
 }
-export const InvoiceModel = sequelize.define<InvoiceModel>('invoice', {
+export const InvoiceModel = sequelize!.define<InvoiceModel>('invoice', {
   name: {
     type: DataTypes.STRING
   },

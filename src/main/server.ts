@@ -2,7 +2,7 @@ import { Server, getEnv, sendErrorResponse, sendSuccessResponse } from '@docsplo
 import sessionStore from 'connect-session-sequelize'
 import session from 'express-session'
 import passport from 'passport'
-import { connectDatabase, sequelize } from './utils/database'
+import { sequelize } from './utils/database'
 import { app as eapp } from 'electron'
 import { downloadFromBucket } from './utils/uploader'
 import { UserModel } from './app/user/user.model'

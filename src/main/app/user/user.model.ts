@@ -20,7 +20,7 @@ export interface UserModel
   id: string
 }
 
-const Users = sequelize.define<UserModel>('user', {
+const Users = sequelize!.define<UserModel>('user', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,

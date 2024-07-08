@@ -24,7 +24,7 @@ export interface SprintModel
   projectId: ForeignKey<ProjectsModel['id']>
 }
 
-const Sprints = sequelize.define<SprintModel>('sprint', {
+const Sprints = sequelize!.define<SprintModel>('sprint', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,

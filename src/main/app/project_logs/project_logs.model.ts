@@ -23,7 +23,7 @@ export interface ProjectLogModel
   }
 }
 
-const ProjectLogs = sequelize.define<ProjectLogModel>('project_logs', {
+const ProjectLogs = sequelize!.define<ProjectLogModel>('project_logs', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,

@@ -18,7 +18,7 @@ export interface ProjectsModel
   id: string
 }
 
-const Projects = sequelize.define<ProjectsModel>('projects', {
+const Projects = sequelize!.define<ProjectsModel>('projects', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,

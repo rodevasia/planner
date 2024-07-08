@@ -11,7 +11,7 @@ interface Contributors
   role: 'OWNER' | 'MEMBER'
 }
 
-const Contributors = sequelize.define<Contributors>('contributors', {
+const Contributors = sequelize!.define<Contributors>('contributors', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,

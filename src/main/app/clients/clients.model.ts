@@ -22,7 +22,7 @@ export interface ClientModel
   userId: ForeignKey<string>
 }
 // Any model related works should be done here.
-const Clients = sequelize.define<ClientModel>('client', {
+const Clients = sequelize!.define<ClientModel>('client', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,

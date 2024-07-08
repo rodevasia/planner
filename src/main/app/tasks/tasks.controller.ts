@@ -43,7 +43,7 @@ export default class Tasks {
       const tasks = await TasksModel.findAndCountAll({
         where: { ...req.query },
         order: [
-          sequelize.literal(
+          sequelize!.literal(
             "CASE WHEN status = 'INPROGRESS' THEN 1 WHEN status = 'TODO' THEN 2 WHEN status = 'DONE' THEN 3 END"
           ),
           ['updatedAt', 'DESC']
