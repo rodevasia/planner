@@ -4,7 +4,7 @@
   "description": "An Electron application with Solid and TypeScript",
   "main": "./out/main/index.js",
   "author": "Robert Devasia <robertdevasia@outlook.com>",
-  "homepage": "docsploit.github.io/planner",
+  "homepage": "rodevasia.github.io/planner",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",

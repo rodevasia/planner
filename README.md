@@ -1,4 +1,4 @@
-# syplans
+# Planner
 
 An Electron application with Solid and TypeScript
 
