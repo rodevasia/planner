@@ -12,7 +12,9 @@ export function comparePassword(password: string, hash: string) {
 
 export function sendMail(message: string, subject: string, email: string) {
   const nodemailer = createTransport({
-    service: 'GMAIL',
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false,
     auth: {
       user: getEnv('EMAIL_USERNAME'),
       pass: getEnv('EMAIL_PASSWORD')
