@@ -60,12 +60,12 @@ export default function (name: string, verificationLink: string) {
             position: relative;
         }
     </style>
-    <title>Syplans</title>
+    <title>Planner</title>
 </head>
 <body>
     <div class="card" >
         <div class="blue">
-            <h3 >Syplans</h3>
+            <h3 >Planner</h3>
         </div>
         <div class="seco">
             <p class="name">Hi <strong>${name}</strong>,</p>

@@ -1,9 +1,14 @@
 const { execSync } = require('child_process')
 const os = require('os')
-const platform = os.platform()
-const sourceFile = '.espressive'
-const destination = platform === 'win32' ? 'out\\\\main\\\\' : 'out/main/'
-const command =
-  platform === 'win32' ? `copy ${sourceFile} ${destination}` : `cp ${sourceFile} ${destination}`
-execSync(command)
+const path = require('path')
+const fse = require('fs-extra')
+
+const srcDir = path.resolve('src/main/static')
+const destDir = path.resolve('out/main/static')
+
+const src = path.resolve('.espressive')
+const dest = path.resolve('out/main/.espressive')
+
+fse.copySync(src, dest)
+fse.copySync(srcDir, destDir)
 console.log('File copied successfully')

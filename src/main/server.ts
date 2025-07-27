@@ -20,7 +20,7 @@ import('./app/tasks/tasks.controller')
 import('./app/project_logs/project_logs.controller')
 import('./app/invoice/invoice.controller')
 
-const server = new Server('Syplans', {
+const server = new Server('Planner', {
   cors: {
     origin: ['http://localhost:5173'],
     credentials: true,

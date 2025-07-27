@@ -2,9 +2,11 @@ import { app, shell, BrowserWindow, dialog, screen, ipcMain } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { getEnv, sendSuccessResponse, Server } from '@docsploit/espress'
+import { existsSync, mkdirSync, readFileSync } from 'fs'
+import { getEnv, sendErrorResponse, sendSuccessResponse, Server } from '@docsploit/espress'
 import { connectDatabase, sequelize } from './utils/database'
+import { writeFile } from 'fs/promises'
+import http from 'http'
 let mainWindow: BrowserWindow
 
 const existStorage = existsSync(path.join(app.getPath('userData'), 'storage.json'))
@@ -33,7 +35,7 @@ if (existStorage) {
     }
   })
 } else {
-  const server = new Server('Syplans', {
+  const server = new Server('Planner', {
     cors: {
       origin: ['http://localhost:5173'],
       credentials: true,
@@ -43,7 +45,18 @@ if (existStorage) {
   server.app.get('/', (req, res) => {
     return sendSuccessResponse('success', { path: '/auth/connection' }, res)
   })
-
+  server.app.use(
+    '/',
+    server.express.static(path.join(__dirname, '..', 'renderer'), { index: false })
+  )
+  server.app.get('/app', async (req, res) => {
+    try {
+      return res.sendFile(path.join(__dirname, '..', 'renderer', 'index.html'))
+    } catch (error) {
+      console.log(error)
+      return sendErrorResponse(500, 'Internal Server Error', res)
+    }
+  })
   server.run({ port: getEnv('PORT') })
 }
 
@@ -58,7 +71,7 @@ if (process.defaultApp) {
 }
 
 ipcMain.on('create-connection', async (event, arg) => {
-  writeFileSync(path.join(app.getPath('userData'), 'storage.json'), JSON.stringify(arg))
+  await writeFile(path.join(app.getPath('userData'), 'storage.json'), JSON.stringify(arg))
   try {
     const c = await connectDatabase(true)
     if (c) {
@@ -71,7 +84,7 @@ ipcMain.on('create-connection', async (event, arg) => {
         await import('./app/tasks/tasks.controller')
         await import('./app/project_logs/project_logs.controller')
         await import('./app/invoice/invoice.controller')
-        await sequelize?.sync({ alter: true });
+        await sequelize?.sync({ alter: true })
         app.relaunch()
         app.exit(1)
       }
@@ -174,7 +187,9 @@ function createWindow(): void {
       mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/auth/connection')
     }
   } else {
-    mainWindow.loadURL('http://localhost:6453/app')
+      waitForServer('/app', 6453).then(() =>
+      mainWindow.loadURL(`http://localhost:${getEnv('PORT')}/app`)
+    )
   }
 }
 
@@ -243,4 +258,25 @@ async function handleDeeplinks(key: string, value: string) {
       dialog.showMessageBox({ message: res })
     }
   }
+}
+
+function waitForServer(url: string, port: number, retries = 10, interval = 500): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const tryConnect = (attempt = 0) => {
+      const req = http.get({ hostname: 'localhost', port, path: url }, (res) => {
+        if (res.statusCode === 200) return resolve()
+        retry()
+      })
+
+      req.on('error', retry)
+      req.end()
+
+      function retry() {
+        if (attempt >= retries) return reject(new Error('Server not ready'))
+        setTimeout(() => tryConnect(attempt + 1), interval)
+      }
+    }
+
+    tryConnect()
+  })
 }

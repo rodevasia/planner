@@ -1,5 +1,5 @@
 {
-  "name": "syplans",
+  "name": "planner",
   "version": "0.0.1",
   "description": "An Electron application with Solid and TypeScript",
   "main": "./out/main/index.js",

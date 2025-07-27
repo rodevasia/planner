@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: syplans
+productName: planner
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: syplans
+  executableName: planner
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -31,10 +31,11 @@ linux:
   target:
     - deb
     # - rpm
+  icon: "icon.png"
   maintainer: electronjs.org
-  mimeTypes: [x-scheme-handler/syplans] # Define MimeType
+  mimeTypes: [x-scheme-handler/planner] # Define MimeType
   desktop:                            # Define desktop elem
-    exec: syplans %u
+    exec: planner %u
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
@@ -43,5 +44,5 @@ publish:
   provider: generic
   url: https://example.com/auto-updates
 protocols:
-  name: syplans
+  name: planner
   schemes: ["planner"]
