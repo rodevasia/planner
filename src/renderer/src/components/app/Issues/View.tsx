@@ -72,6 +72,7 @@ const ViewIssue: Component = () => {
                 onStart={(status) => setStatus(status)}
                 status={task()?.status!}
                 onStop={async (time, status) => {
+                  
                   const action = !task()?.duration ? 'first_stop' : 'stop'
 
                   await updateTask(

@@ -5,6 +5,7 @@ import {
   Post,
   Put,
   ValidationSchema,
+  getEnv,
   sendErrorResponse,
   sendSuccessResponse
 } from '@docsploit/espress'
@@ -109,7 +110,7 @@ export default class Tasks {
       authenticated,
       multerMultiFieldHandler(
         [{ name: 'attr_1' }, { name: 'attr_2' }, { name: 'attr_3' }],
-        'tasks',
+        getEnv("BUCKET_NAME"),
         ['image/jpg', 'image/jpeg', 'image/png', 'image/webp']
       )
     ]

@@ -14,7 +14,7 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "copy": "node copy.js",
-    "watch": "npx nodemon --watch src/main --ext ts --exec npm run dev",
+    "watch": "nodemon --watch src/main --ext ts --exec npm run dev",
     "build": "npm run typecheck && electron-vite build && npm run copy",
     "postinstall": "electron-builder install-app-deps",
     "build:win": "npm run build && electron-builder --win --config",

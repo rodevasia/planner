@@ -16,9 +16,11 @@ if (existStorage) {
   )
   process.env.EMAIL_PASSWORD = store.mailerPassword
   process.env.EMAIL_USERNAME = store.email
+  process.env.VERIFICATION_SECRET = store.verificationSecret
+  process.env.SP_CLIENT = store.spClient;
+  process.env.SP_TK = store.spTk;
+  process.env.BUCKET_NAME=store.bucket;
 }
-process.env.VERIFICATION_SECRET =
-  'c9a2fb272ac1417de942b3d5d5336748e09d863f06c9237577692289ac3e02a452c97f3100e46b5979e398c474'
 process.env.DOMAIN = 'http://localhost:6453/'
 
 process.env.PORT = '6453'

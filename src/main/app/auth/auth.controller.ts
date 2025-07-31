@@ -16,6 +16,7 @@ import signupTemplate from '../../utils/email_templates/signup.template'
 import { sign, verify } from 'jsonwebtoken'
 import forgotPasswordTemplate from '../../utils/email_templates/forgotPassword.template'
 import { registerSchema } from './auth.model'
+import User from '../user/user.controller'
 
 /**
  * @name Authentication
@@ -79,6 +80,11 @@ export default class Auth {
       console.log(error)
       if (error.name === 'SequelizeUniqueConstraintError') {
         return sendErrorResponse(400, { message: 'User already exists' }, res)
+      }
+      const usr = await Users.findOne({ where: { email: user.email } })
+      if (usr) {
+        await usr.destroy()
+        await usr.save()
       }
       return sendErrorResponse(500, 'Internal Server Error', res)
     }

@@ -1,13 +1,10 @@
-import { sendErrorResponse } from '@docsploit/espress'
+import { getEnv, sendErrorResponse } from '@docsploit/espress'
 import { createClient } from '@supabase/supabase-js'
 import { Request, Response, NextFunction } from 'express'
 import multer, { Field, MulterError } from 'multer'
 import path from 'path'
 // Create a single supabase client for interacting with your database
-export const supabase = createClient(
-  'https://svqaxlmmnnxzxyxsnpaw.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2cWF4bG1tbm54enh5eHNucGF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODM3OTY4MTEsImV4cCI6MTk5OTM3MjgxMX0.kkEwNnYN0vCZGL6jUn4zVQreKhTcJg7UXg47T3VbeHU'
-)
+export const supabase = createClient(getEnv("SP_CLIENT"),getEnv("SP_TK"))
 
 export function multerMultiFieldHandler(
   keyNames: Field[],
